@@ -21,6 +21,7 @@
           <h1 id="placeholder-state"></h1>
         </header>
 
+        <p><img id="placeholder-image" class="circular" src="images/prolly-not.jpg"></p>
         <p id="placeholder-time"></p>
 
         <footer>
@@ -37,15 +38,18 @@
       var states = {
         'maybe': {
           'class': 'maybe',
-          'text': 'Maybs!'
+          'text': 'Maybs!',
+          'image': 'images/maybe.jpg'
         },
         'prolly-not': {
           'class': 'prolly-not',
-          'text': 'Prolly not!'
+          'text': 'Prolly not!',
+          'image': 'images/prolly-not.jpg'
         },
         'yes': {
           'class': 'yes',
-          'text': 'Yes!'
+          'text': 'Yes!',
+          'image': 'images/yes.jpg'
         }
       }
       function isHeUp(m) {
@@ -91,8 +95,9 @@
       var hisMoment = moment.tz('Australia/Brisbane');
       var state = isHeUp(hisMoment);
       $('#placeholder-state').attr('class', state['class']);
-      $('#placeholder-state').text(state['text']);
+      $('#placeholder-state').text(state.text);
       $('#placeholder-time').text(hisMoment.format("[It's] h:mm:ss A [on] dddd [where he is.]"));
+      $('#placeholder-image').attr('src', state.image);
     };
     $(function(){
       updateState();

@@ -350,6 +350,10 @@ footer a:hover {
   color: #5cb85c;
 }
 
+.circular {
+  border-radius:50% 50% 50% 50%;
+}
+
 /* #Media Queries
 ================================================== */
 
