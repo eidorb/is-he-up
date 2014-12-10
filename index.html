@@ -6,7 +6,6 @@
     <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -18,22 +17,88 @@
       <div class="inner">
 
         <header>
-          <h1>Is he up?</h1>
+          <h2>Is he up?</h2>
+          <h1 id="placeholder-state"></h1>
         </header>
 
-        <hr>
-
-        <section id="main_content">
-          <h1>Yes he is!</h1>
-          <p>It's {{ placeholder-time }} where he is.
-        </section>
+        <p id="placeholder-time"></p>
 
         <footer>
           Is-he-up is maintained by <a href="https://github.com/eidorb">eidorb</a><br>
-          Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
         </footer>
 
       </div>
     </div>
+
+    <script src="javascripts/moment.min.js"></script>
+    <script src="javascripts/moment-timezone-with-data-2010-2020.min.js"></script>
+    <script src="javascripts/jquery-1.11.1.min.js"></script>
+    <script>
+      var states = {
+        'maybe': {
+          'class': 'maybe',
+          'text': 'Maybs!'
+        },
+        'prolly-not': {
+          'class': 'prolly-not',
+          'text': 'Prolly not!'
+        },
+        'yes': {
+          'class': 'yes',
+          'text': 'Yes!'
+        }
+      }
+      function isHeUp(m) {
+        m = moment.tz('Australia/Brisbane');
+        var day = m.day();
+        var hour = m.hour();
+        // Monday to Thursday.
+        if (day >= 1 && day <= 4) {
+          if (hour >= 6 && hour <= 23) {
+            if (hour >= 7 && hour < 22) {
+              return states['yes'];
+            };
+            return states['maybe'];
+          };
+        // Friday.
+        } else if (day == 5) {
+          if (hour >= 6 && hour <= 22) {
+            if (hour >= 7 && hour <= 23) {
+              return states['yes'];
+            };
+            return states['maybe'];
+          };
+        // Saturday.
+        } else if (day == 6) {
+          if (hour >= 0 && hour <= 1) {
+            return states['maybe']
+          } else if (hour >= 2 && hour <= 6) {
+            return states['prolly-not'];
+          };
+          return states['yes'];
+        // Sunday.
+        } else if (day == 0) {
+          if (hour >= 2 && hour < 7) {
+            return states['prolly-not'];
+          } else if (hour >= 7 && hour < 22) {
+            return states['yes'];
+          };
+          return states['maybe'];
+        };
+        return states['prolly-not'];
+      }
+    function updateState() {
+      var hisMoment = moment.tz('Australia/Brisbane');
+      var state = isHeUp(hisMoment);
+      $('#placeholder-state').attr('class', state['class']);
+      $('#placeholder-state').text(state['text']);
+      $('#placeholder-time').text(hisMoment.format("[It's] h:mm:ss A [on] dddd [where he is.]"));
+    };
+    $(function(){
+      updateState();
+      setInterval(updateState, 1000);
+    });
+    </script>
+
   </body>
 </html>
