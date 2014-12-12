@@ -1,34 +1,53 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>Is he up?</title>
+
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="stylesheets/normalize.css">
+    <link rel="stylesheet" href="stylesheets/skeleton.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <style>
+      .maybe {
+        color: #f0ad4e;
+      }
+
+      .prolly-not {
+        color: #d9534f;
+      }
+
+      .yes {
+        color: #5cb85c;
+      }
+
+      .circular {
+        border-radius:50% 50% 50% 50%;
+      }
+    </style>
   </head>
 
   <body>
-    <div id="container">
-      <div class="inner">
+    <div class="container">
 
-        <header>
-          <h2>Is he up?</h2>
-          <h1 id="state-text"></h1>
-        </header>
+      <div class="row" style="margin-top: 25%">
+        <div class="five columns">
+          <h1>Is he up?</h1>
+        </div>
+        <div class="four columns">
+          <img id="state-image" class="circular" src="">
+        </div>
+        <div class="three columns">
+          <h1><span id="state-text"></span></h1>
+          <p id="moment-text"></p>
+        </div>
+      </div>
 
-        <p><img id="state-image" class="circular" src=""></p>
-
-        <p id="moment-text"></p>
-
-        <footer>
-          is-he-up is maintained by <a href="https://github.com/eidorb">eidorb</a><br>
-        </footer>
-
+      <div class="row">
+        <p>
+          <small>is-he-up is maintained by <a href="https://github.com/eidorb">eidorb</a>.</small>
+        </p>
       </div>
     </div>
 
