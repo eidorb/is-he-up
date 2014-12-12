@@ -1,4 +1,4 @@
 is-he-up
 ========
 
-[View with GitHub pages](http://eidorb.github.io/is-he-up).
+[View](http://eidorb.github.io/is-he-up) with GitHub pages.
