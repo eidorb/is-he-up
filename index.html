@@ -36,74 +36,83 @@
     <script src="javascripts/moment-timezone-with-data-2010-2020.min.js"></script>
     <script src="javascripts/jquery-1.11.1.min.js"></script>
     <script>
+      // State data.
       var states = {
-        'maybe': {
-          'class': 'maybe',
-          'text': 'Maybs!',
-          'image': 'images/maybe.jpg'
-        },
-        'prolly-not': {
+        prollyNot: {
           'class': 'prolly-not',
-          'text': 'Prolly not!',
-          'image': 'images/prolly-not.jpg'
+          text: 'Prolly not!',
+          image: 'images/prolly-not.jpg'
         },
-        'yes': {
+        maybe: {
+          'class': 'maybe',
+          text: 'Maybs!',
+          image: 'images/maybe.jpg'
+        },
+        yes: {
           'class': 'yes',
-          'text': 'Yes!',
-          'image': 'images/yes.jpg'
+          text: 'Yes!',
+          image: 'images/yes.jpg'
         }
-      }
-      function isHeUp(m) {
-        m = moment.tz('Australia/Brisbane');
-        var day = m.day();
-        var hour = m.hour();
-        // Monday to Thursday.
-        if (day >= 1 && day <= 4) {
-          if (hour >= 6 && hour <= 23) {
-            if (hour >= 7 && hour < 22) {
-              return states['yes'];
-            };
-            return states['maybe'];
-          };
-        // Friday.
-        } else if (day == 5) {
-          if (hour >= 6 && hour <= 22) {
-            if (hour >= 7 && hour <= 23) {
-              return states['yes'];
-            };
-            return states['maybe'];
-          };
-        // Saturday.
-        } else if (day == 6) {
-          if (hour >= 0 && hour <= 1) {
-            return states['maybe']
-          } else if (hour >= 2 && hour <= 6) {
-            return states['prolly-not'];
-          };
-          return states['yes'];
+      };
+
+      // Sleep data for each day of the week.
+      var sleepHabits = {
         // Sunday.
-        } else if (day == 0) {
-          if (hour >= 2 && hour < 7) {
-            return states['prolly-not'];
-          } else if (hour >= 7 && hour < 22) {
-            return states['yes'];
+        0: {
+          prollyNot: [2, 3, 4, 5, 6],
+          maybe: [0, 1, 7, 8, 9, 22, 23],
+          yes: [10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21]
+        },
+        // Monday.
+        1: {
+          prollyNot: [0, 1, 2, 3, 4, 5],
+          maybe: [6, 22, 23],
+          yes: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21]
+        },
+        // Friday.
+        5: {
+          prollyNot: [0, 1, 2, 3, 4, 5],
+          maybe: [6, 23],
+          yes: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 22]
+        },
+        // Saturday.
+        6: {
+          prollyNot: [2, 3, 4, 5, 6],
+          maybe: [0, 1, 7, 8, 9, 23],
+          yes: [10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 22]
+        }
+      };
+      // Copy Monday to Tuesday-Thursday.
+      for (var day = 2; day <= 4; day++) {
+        sleepHabits[day] = sleepHabits[1];
+      };
+      console.log(sleepHabits);
+
+      // Return his state for a given day and hour.
+      function isHeUp(day, hour) {
+        for (state in sleepHabits[day]) {
+          for (var i = 0; i < sleepHabits[day][state].length; i++) {
+            if (sleepHabits[day][state][i] === hour)
+              return state;
           };
-          return states['maybe'];
         };
-        return states['prolly-not'];
-      }
-    function updateState() {
-      var hisMoment = moment.tz('Australia/Brisbane');
-      var state = isHeUp(hisMoment);
-      $('#placeholder-state').attr('class', state['class']);
-      $('#placeholder-state').text(state.text);
-      $('#placeholder-time').text(hisMoment.format("[It's] h:mm:ss A [on] dddd [where he is.]"));
-      $('#placeholder-image').attr('src', state.image);
-    };
-    $(function(){
-      updateState();
-      setInterval(updateState, 1000);
-    });
+      };
+
+      // Update the page with state data.
+      function updateState() {
+        var hisMoment = moment.tz('Australia/Brisbane');
+        var state = isHeUp(hisMoment.day(), hisMoment.hour());
+        $('#placeholder-state').attr('class', states[state]['class']);
+        $('#placeholder-state').text(states[state].text);
+        $('#placeholder-time').text(hisMoment.format("[It's] h:mm:ss A [on] dddd [where he is.]"));
+        $('#placeholder-image').attr('src', states[state].image);
+      };
+
+      $(function(){
+        // Update the page every second.
+        updateState();
+        setInterval(updateState, 1000);
+      });
     </script>
 
   </body>
