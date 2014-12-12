@@ -18,12 +18,12 @@
 
         <header>
           <h2>Is he up?</h2>
-          <h1 id="placeholder-state"></h1>
+          <h1 id="state-text"></h1>
         </header>
 
-        <p><img id="placeholder-image" class="circular" src=""></p>
+        <p><img id="state-image" class="circular" src=""></p>
 
-        <p id="placeholder-time"></p>
+        <p id="moment-text"></p>
 
         <footer>
           is-he-up is maintained by <a href="https://github.com/eidorb">eidorb</a><br>
@@ -34,7 +34,6 @@
 
     <script src="javascripts/moment.min.js"></script>
     <script src="javascripts/moment-timezone-with-data-2010-2020.min.js"></script>
-    <script src="javascripts/jquery-1.11.1.min.js"></script>
     <script>
       // State data.
       var states = {
@@ -98,21 +97,20 @@
         };
       };
 
-      // Update the page with state data.
-      function updateState() {
+      // Update the page with state data from a new moment.
+      function updatePage() {
         var hisMoment = moment.tz('Australia/Brisbane');
         var state = isHeUp(hisMoment.day(), hisMoment.hour());
-        $('#placeholder-state').attr('class', states[state]['class']);
-        $('#placeholder-state').text(states[state].text);
-        $('#placeholder-time').text(hisMoment.format("[It's] h:mm:ss A [on] dddd [where he is.]"));
-        $('#placeholder-image').attr('src', states[state].image);
+        document.getElementById('state-text').className = states[state]['class'];
+        document.getElementById('state-text').textContent = states[state].text;
+        document.getElementById('state-image').src = states[state].image;
+        document.getElementById('moment-text').textContent = hisMoment.format(
+          "[It's] h:mm:ss A [on] dddd [where he is.]");
       };
 
-      $(function(){
-        // Update the page every second.
-        updateState();
-        setInterval(updateState, 1000);
-      });
+      // Update the page every second.
+      updatePage();
+      setInterval(updatePage, 1000);
     </script>
 
   </body>
